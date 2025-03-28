@@ -29,7 +29,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="M9F-3O-GBv" userLabel="Cell Image">
-                                                    <rect key="frame" x="20" y="11" width="353" height="202"/>
+                                                    <rect key="frame" x="16" y="4" width="361" height="216"/>
                                                     <color key="backgroundColor" name="YP Black"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -38,14 +38,14 @@
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="28 марта 2025" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wch-pJ-GTj" userLabel="Date Label">
-                                                    <rect key="frame" x="20" y="183" width="93" height="16"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="28 марта 2025" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wch-pJ-GTj" userLabel="Date Label">
+                                                    <rect key="frame" x="24" y="196" width="93" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="no8-ZH-L3P" userLabel="Like Button">
-                                                    <rect key="frame" x="329" y="11" width="44" height="44"/>
+                                                    <rect key="frame" x="333" y="4" width="44" height="44"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="44" id="6eU-ux-te7"/>
                                                         <constraint firstAttribute="height" constant="44" id="UIc-XT-tob"/>
@@ -65,11 +65,16 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" name="YP Black"/>
                                         <constraints>
-                                            <constraint firstItem="M9F-3O-GBv" firstAttribute="top" secondItem="9gU-0q-BBE" secondAttribute="topMargin" id="K9I-oz-BnS"/>
-                                            <constraint firstItem="M9F-3O-GBv" firstAttribute="leading" secondItem="9gU-0q-BBE" secondAttribute="leadingMargin" id="hee-F0-gdg"/>
-                                            <constraint firstAttribute="trailingMargin" secondItem="M9F-3O-GBv" secondAttribute="trailing" id="l5u-oT-HKS"/>
-                                            <constraint firstAttribute="bottomMargin" secondItem="M9F-3O-GBv" secondAttribute="bottom" id="wDe-f7-UkI"/>
+                                            <constraint firstItem="M9F-3O-GBv" firstAttribute="top" secondItem="9gU-0q-BBE" secondAttribute="top" constant="4" id="K9I-oz-BnS"/>
+                                            <constraint firstItem="M9F-3O-GBv" firstAttribute="leading" secondItem="9gU-0q-BBE" secondAttribute="leading" constant="16" id="hee-F0-gdg"/>
+                                            <constraint firstAttribute="trailing" secondItem="M9F-3O-GBv" secondAttribute="trailing" constant="16" id="l5u-oT-HKS"/>
+                                            <constraint firstAttribute="bottom" secondItem="M9F-3O-GBv" secondAttribute="bottom" constant="4" id="wDe-f7-UkI"/>
                                         </constraints>
+                                        <connections>
+                                            <outlet property="cellImage" destination="M9F-3O-GBv" id="dTx-qG-0RB"/>
+                                            <outlet property="dateLabel" destination="Wch-pJ-GTj" id="M3f-0p-lWJ"/>
+                                            <outlet property="likeButton" destination="no8-ZH-L3P" id="2fW-wb-nr5"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -82,9 +87,9 @@
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="JlW-d0-Qww" secondAttribute="trailing" id="2WX-yM-Qya"/>
-                            <constraint firstItem="JlW-d0-Qww" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="DR3-wz-S1J"/>
+                            <constraint firstAttribute="top" secondItem="JlW-d0-Qww" secondAttribute="top" id="DR3-wz-S1J"/>
                             <constraint firstItem="JlW-d0-Qww" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="ISj-KW-eKT"/>
-                            <constraint firstAttribute="bottom" secondItem="JlW-d0-Qww" secondAttribute="bottom" id="ROW-zh-NS7"/>
+                            <constraint firstItem="JlW-d0-Qww" firstAttribute="bottom" secondItem="8bC-Xf-vdC" secondAttribute="bottom" id="ROW-zh-NS7"/>
                         </constraints>
                     </view>
                     <connections>
