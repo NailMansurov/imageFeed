@@ -6,8 +6,9 @@ final class ImagesListViewController: UIViewController {
     
     @IBOutlet private var tableView: UITableView!
     
-    private let photosName: [String] = Array(0..<20).map{ "\($0)" }
+    private let photosName: [String] = Array(0..<20).map{ "image\($0)" }
     private let showSingleImageSequeIdentifier = "ShowSingleImage"
+    private let currentDate = Date()
     
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -31,23 +32,24 @@ final class ImagesListViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == showSingleImageSequeIdentifier {
-            guard
-                let viewController = segue.destination as? SingleImageViewController,
-                let indexPath = sender as? IndexPath
-            else {
-                assertionFailure("Invalid segue destination")
-                return
-            }
-            
-            let image = UIImage(named: photosName[indexPath.row])
-            viewController.image = image
-        } else {
+        guard segue.identifier == showSingleImageSequeIdentifier else {
             super.prepare(for: segue, sender: sender)
+            return
         }
+        
+        guard
+            let viewController = segue.destination as? SingleImageViewController,
+            let indexPath = sender as? IndexPath
+        else {
+            assertionFailure("Invalid segue destination")
+            return
+        }
+        
+        viewController.image = UIImage(named: photosName[indexPath.row])
     }
-    
 }
+
+
 
 // MARK: - Extensions
 
@@ -79,10 +81,9 @@ extension ImagesListViewController {
             return
         }
         
-        let date = dateFormatter.string(from: Date())
         let isLiked = indexPath.row % 2 == 0
         
-        cell.configure(with: image, date: date, isLiked: isLiked)
+        cell.configure(with: image, date: dateFormatter.string(from: currentDate), isLiked: isLiked)
     }
     
 }
