@@ -2,13 +2,17 @@ import UIKit
 
 final class ImagesListCell: UITableViewCell {
     
-    // MARK: - Public properties
+    // MARK: - Static properties
     
     static let reuseIdentifier = "ImagesListCell"
+    
+    // MARK: - Private properties
     
     @IBOutlet private var likeButton: UIButton!
     @IBOutlet private var dateLabel: UILabel!
     @IBOutlet private var cellImage: UIImageView!
+    
+    // MARK: - Public methods
     
     func configure(with image: UIImage, date: String, isLiked: Bool) {
         cellImage.image = image

@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		D1E8D6652DD2567D00936493 /* RswiftLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = D1E8D6642DD2567D00936493 /* RswiftLibrary */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		D1D327642D91903300AC75AA /* imageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = imageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1E8D6652DD2567D00936493 /* RswiftLibrary in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,12 +77,14 @@
 			buildRules = (
 			);
 			dependencies = (
+				D1E8D6672DD2578C00936493 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				D1D327662D91903300AC75AA /* imageFeed */,
 			);
 			name = imageFeed;
 			packageProductDependencies = (
+				D1E8D6642DD2567D00936493 /* RswiftLibrary */,
 			);
 			productName = imageFeed;
 			productReference = D1D327642D91903300AC75AA /* imageFeed.app */;
@@ -91,7 +98,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1620;
-				LastUpgradeCheck = 1620;
+				LastUpgradeCheck = 1630;
 				TargetAttributes = {
 					D1D327632D91903200AC75AA = {
 						CreatedOnToolsVersion = 16.2;
@@ -107,6 +114,9 @@
 			);
 			mainGroup = D1D3275B2D91903200AC75AA;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				D1E8D6632DD2567D00936493 /* XCRemoteSwiftPackageReference "R" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D1D327652D91903300AC75AA /* Products */;
 			projectDirPath = "";
@@ -137,6 +147,13 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		D1E8D6672DD2578C00936493 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = D1E8D6662DD2578C00936493 /* RswiftGenerateInternalResources */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
 		D1D327782D91903300AC75AA /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -145,7 +162,6 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = P7C43DJX8J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = imageFeed/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -178,7 +194,6 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = P7C43DJX8J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = imageFeed/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -239,6 +254,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = P7C43DJX8J;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -302,6 +318,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = P7C43DJX8J;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -345,6 +362,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D1E8D6632DD2567D00936493 /* XCRemoteSwiftPackageReference "R" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mac-cain13/R.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.8.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D1E8D6642DD2567D00936493 /* RswiftLibrary */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D1E8D6632DD2567D00936493 /* XCRemoteSwiftPackageReference "R" */;
+			productName = RswiftLibrary;
+		};
+		D1E8D6662DD2578C00936493 /* RswiftGenerateInternalResources */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D1E8D6632DD2567D00936493 /* XCRemoteSwiftPackageReference "R" */;
+			productName = "plugin:RswiftGenerateInternalResources";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D1D3275C2D91903200AC75AA /* Project object */;
 }
