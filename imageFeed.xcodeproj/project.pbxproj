@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D169E4B42DD65B71001DB683 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D169E4B32DD65B71001DB683 /* WebKit.framework */; };
 		D1E8D6652DD2567D00936493 /* RswiftLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = D1E8D6642DD2567D00936493 /* RswiftLibrary */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		D1D327642D91903300AC75AA /* imageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = imageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D169E47D2DD63583001DB683 /* imageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = imageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D169E4B32DD65B71001DB683 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -40,6 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D169E4B42DD65B71001DB683 /* WebKit.framework in Frameworks */,
 				D1E8D6652DD2567D00936493 /* RswiftLibrary in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -47,20 +50,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D169E4B22DD65B70001DB683 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D169E4B32DD65B71001DB683 /* WebKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D1D3275B2D91903200AC75AA = {
 			isa = PBXGroup;
 			children = (
 				D1D327662D91903300AC75AA /* imageFeed */,
-				D1D327652D91903300AC75AA /* Products */,
+				D169E47D2DD63583001DB683 /* imageFeed.app */,
+				D169E4B22DD65B70001DB683 /* Frameworks */,
 			);
-			sourceTree = "<group>";
-		};
-		D1D327652D91903300AC75AA /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				D1D327642D91903300AC75AA /* imageFeed.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -87,7 +91,7 @@
 				D1E8D6642DD2567D00936493 /* RswiftLibrary */,
 			);
 			productName = imageFeed;
-			productReference = D1D327642D91903300AC75AA /* imageFeed.app */;
+			productReference = D169E47D2DD63583001DB683 /* imageFeed.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -118,7 +122,7 @@
 				D1E8D6632DD2567D00936493 /* XCRemoteSwiftPackageReference "R" */,
 			);
 			preferredProjectObjectVersion = 77;
-			productRefGroup = D1D327652D91903300AC75AA /* Products */;
+			productRefGroup = D1D3275B2D91903200AC75AA;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
