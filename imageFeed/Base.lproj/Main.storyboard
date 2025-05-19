@@ -78,18 +78,26 @@
                                     <wkPreferences key="preferences"/>
                                 </wkWebViewConfiguration>
                             </wkWebView>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" progressImage="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ams-Sy-dM8">
+                                <rect key="frame" x="0.0" y="162" width="393" height="4"/>
+                                <color key="progressTintColor" name="YP Black"/>
+                            </progressView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="cOt-iY-PJk"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="NfV-Kf-1Mc" firstAttribute="top" secondItem="Cf7-i1-Dgs" secondAttribute="top" id="94r-3M-bIi"/>
+                            <constraint firstItem="ams-Sy-dM8" firstAttribute="leading" secondItem="cOt-iY-PJk" secondAttribute="leading" id="DFv-e6-Wqe"/>
+                            <constraint firstItem="ams-Sy-dM8" firstAttribute="top" secondItem="cOt-iY-PJk" secondAttribute="top" id="JAF-M1-7VI"/>
                             <constraint firstAttribute="bottom" secondItem="NfV-Kf-1Mc" secondAttribute="bottom" id="ZDG-at-EWD"/>
                             <constraint firstAttribute="trailing" secondItem="NfV-Kf-1Mc" secondAttribute="trailing" id="cEq-Gq-XCu"/>
                             <constraint firstItem="NfV-Kf-1Mc" firstAttribute="leading" secondItem="Cf7-i1-Dgs" secondAttribute="leading" id="wYy-A1-Ras"/>
+                            <constraint firstItem="cOt-iY-PJk" firstAttribute="trailing" secondItem="ams-Sy-dM8" secondAttribute="trailing" id="yED-UN-cXv"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="gIV-sU-eHd"/>
                     <connections>
+                        <outlet property="progressView" destination="ams-Sy-dM8" id="vjB-92-Y7Q"/>
                         <outlet property="webView" destination="NfV-Kf-1Mc" id="NSw-Nd-QOf"/>
                     </connections>
                 </viewController>
@@ -320,6 +328,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="0.5" width="128" height="128"/>
         <image name="Backward" width="24" height="24"/>
         <image name="auth_screen_logo" width="60" height="60"/>
         <image name="image0" width="1600" height="1059"/>
