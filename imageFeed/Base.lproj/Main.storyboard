@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="hqa-wp-t2B">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="6qB-1O-HPr">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -26,7 +26,7 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fne-II-E2B">
-                                <rect key="frame" x="16" y="646" width="361" height="48"/>
+                                <rect key="frame" x="16" y="680" width="361" height="48"/>
                                 <color key="backgroundColor" name="YP White"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="j62-1B-rrv"/>
@@ -79,7 +79,7 @@
                                 </wkWebViewConfiguration>
                             </wkWebView>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" progressImage="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ams-Sy-dM8">
-                                <rect key="frame" x="0.0" y="162" width="393" height="4"/>
+                                <rect key="frame" x="0.0" y="103" width="393" height="4"/>
                                 <color key="progressTintColor" name="YP Black"/>
                             </progressView>
                         </subviews>
@@ -219,7 +219,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="rAQ-PI-jAt">
             <objects>
-                <tabBarController id="dJO-N4-2bt" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarViewController" id="dJO-N4-2bt" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="3R0-JZ-hv3">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -308,13 +308,40 @@
             </objects>
             <point key="canvasLocation" x="596" y="-1030"/>
         </scene>
+        <!--Splash View Controller-->
+        <scene sceneID="oXu-zf-OwN">
+            <objects>
+                <viewController id="6qB-1O-HPr" customClass="SplashViewController" customModule="imageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="o0q-kz-3SN">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="splash_screen_logo" translatesAutoresizingMaskIntoConstraints="NO" id="RtK-ma-1Uw">
+                                <rect key="frame" x="159" y="412.33333333333331" width="75" height="77"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="hDY-IN-R3y"/>
+                        <color key="backgroundColor" name="YP Black"/>
+                        <constraints>
+                            <constraint firstItem="RtK-ma-1Uw" firstAttribute="centerX" secondItem="o0q-kz-3SN" secondAttribute="centerX" id="MmF-jG-tng"/>
+                            <constraint firstItem="RtK-ma-1Uw" firstAttribute="centerY" secondItem="o0q-kz-3SN" secondAttribute="centerY" constant="25.166666666666686" id="xfO-sD-Uzr"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <segue destination="hqa-wp-t2B" kind="presentation" identifier="ShowAuthenticationScreen" modalPresentationStyle="fullScreen" id="I7R-mn-c5t"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5kg-B7-ckl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2839" y="-1915"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="qAL-VY-TFh">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="hqa-wp-t2B" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Eec-v9-Y4B">
-                        <rect key="frame" x="0.0" y="118" width="393" height="44"/>
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -335,6 +362,7 @@
         <image name="image10" width="1280" height="852"/>
         <image name="likeButtonOn" width="44" height="44"/>
         <image name="share_button" width="50" height="50"/>
+        <image name="splash_screen_logo" width="75" height="78"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="tab_profile_active" width="30" height="30"/>
         <namedColor name="YP Black">

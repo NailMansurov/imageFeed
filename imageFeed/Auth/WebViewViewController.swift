@@ -12,14 +12,14 @@ protocol WebViewViewControllerDelegate: AnyObject {
 
 final class WebViewViewController: UIViewController {
     
-    // MARK: - Public Properties
-    
-    weak var delegate: WebViewViewControllerDelegate?
-    
     // MARK: - Private properties
     
     @IBOutlet private var webView: WKWebView!
     @IBOutlet private var progressView: UIProgressView!
+    
+    // MARK: - Public Properties
+    
+    weak var delegate: WebViewViewControllerDelegate?
     
     // MARK: - Lifecycle
     
@@ -76,6 +76,7 @@ final class WebViewViewController: UIViewController {
     
     private func loadAuthView() {
         guard var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString) else {
+            print("Ошибка при создании URLComponents")
             return
         }
         
@@ -87,6 +88,7 @@ final class WebViewViewController: UIViewController {
         ]
         
         guard let url = urlComponents.url else {
+            print("Ошибка при создании URL")
             return
         }
         
