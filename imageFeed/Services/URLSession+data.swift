@@ -18,13 +18,13 @@ extension URLSession {
         }
         
         let task = dataTask(with: request, completionHandler: { data, response, error in
-            if let data = data, let response = response, let statusCode = (response as? HTTPURLResponse)?.statusCode {
+            if let data, let response, let statusCode = (response as? HTTPURLResponse)?.statusCode {
                 if 200 ..< 300 ~= statusCode {
                     fulfillCompletionOnTheMainThread(.success(data))
                 } else {
                     fulfillCompletionOnTheMainThread(.failure(NetworkError.httpStatusCode(statusCode, data)))
                 }
-            } else if let error = error {
+            } else if let error {
                 fulfillCompletionOnTheMainThread(.failure(NetworkError.urlRequestError(error)))
             } else {
                 fulfillCompletionOnTheMainThread(.failure(NetworkError.urlSessionError))

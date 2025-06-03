@@ -31,7 +31,9 @@ final class OAuth2Service {
     func fetchOAuthToken(code: String,
                          completion: @escaping (Result<String, Error>) -> Void) {
         guard let request = makeOAuthTokenRequest(code: code) else {
-            completion(.failure(NSError(domain: "InvalidRequest", code: 0)))
+            DispatchQueue.main.async {
+                completion(.failure(NSError(domain: "InvalidRequest", code: 0)))
+            }
             return
         }
         
@@ -42,10 +44,14 @@ final class OAuth2Service {
                     let decoded = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
                     let token = decoded.accessToken
                     OAuth2TokenStorage.shared.token = token
-                    completion(.success(token))
+                    DispatchQueue.main.async {
+                        completion(.success(token))
+                    }
                 } catch {
                     print("Ошибка при декодирвоании \(error)")
-                    completion(.failure(error))
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
                 }
                 
             case .failure(let error):
@@ -66,7 +72,9 @@ final class OAuth2Service {
                 } else {
                     print("Ошибка: \(error)")
                 }
-                completion(.failure(error))
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
             }
         }
         task.resume()
