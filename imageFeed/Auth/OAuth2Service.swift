@@ -41,7 +41,9 @@ final class OAuth2Service {
             switch result {
             case .success(let data):
                 do {
-                    let decoded = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
+                    let decoder = JSONDecoder()
+                    decoder.keyDecodingStrategy = .convertFromSnakeCase
+                    let decoded = try decoder.decode(OAuthTokenResponseBody.self, from: data)
                     let token = decoded.accessToken
                     OAuth2TokenStorage.shared.token = token
                     DispatchQueue.main.async {
