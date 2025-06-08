@@ -1,4 +1,5 @@
 import UIKit
+import SwiftKeychainWrapper
 
 final class ProfileViewController: UIViewController {
     
@@ -27,6 +28,9 @@ final class ProfileViewController: UIViewController {
     }
     
     // MARK: - Private properties
+    
+    private let profileService = ProfileService.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView(image: R.image.avatarPhoto())
@@ -66,6 +70,11 @@ final class ProfileViewController: UIViewController {
     private lazy var logoutButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(R.image.logoutButton(), for: .normal)
+        button.addTarget(
+            self,
+            action: #selector(didTapLogoutButton),
+            for: .touchUpInside
+        )
         view.addSubview(button)
         return button
     }()
@@ -74,11 +83,66 @@ final class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        profileImageServiceObserver = NotificationCenter.default.addObserver(
+            forName: ProfileImageService.didChangeNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            guard let self else { return }
+            self.updateAvatar()
+            
+        }
+        
+        view.backgroundColor = R.color.ypBlack()
+        
         setupUI()
         setupConstraints()
+        updateAvatar()
+        
+        DispatchQueue.main.async{
+            if let profile = self.profileService.profile {
+                self.updateProfileDetails(profile: profile)
+            } else {
+                print("Профиль еще не загружен")
+            }
+        }
+        
+        ProfileImageService.shared.fetchAvatarURL(into: avatarImageView)
+        
+    }
+    
+    deinit {
+        if let observer = profileImageServiceObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
     }
     
     // MARK: - Private methods
+    
+    private func updateProfileDetails(profile: Profile) {
+        nameLabel.text = profile.name
+        loginLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio ?? ""
+    }
+    
+    private func presentAuthViewController() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        guard let auth = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else {
+            return
+        }
+        
+        auth.modalPresentationStyle = .fullScreen
+        present(auth, animated: true, completion: nil)
+    }
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+    }
     
     private func setupUI() {
         view.addSubviews(
@@ -88,6 +152,7 @@ final class ProfileViewController: UIViewController {
             descriptionLabel,
             logoutButton
         )
+        
     }
     
     private func setupConstraints() {
@@ -121,15 +186,11 @@ final class ProfileViewController: UIViewController {
             logoutButton.heightAnchor.constraint(equalToConstant: Constants.logoutButtonHeight)
         ])
     }
-}
-
-// MARK: - Extensions
-
-extension UIView {
-    func addSubviews(_ views: UIView...) {
-        views.forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            addSubview($0)
-        }
+    
+    @objc
+    private func didTapLogoutButton() {
+        print("LogOut")
+        KeychainWrapper.standard.removeObject(forKey: OAuth2TokenStorage.shared.tokenKey)
+        presentAuthViewController()
     }
 }

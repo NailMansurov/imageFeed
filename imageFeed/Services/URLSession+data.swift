@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 enum NetworkError: Error {
     case httpStatusCode(Int, Data?)
@@ -7,30 +7,32 @@ enum NetworkError: Error {
 }
 
 extension URLSession {
-    func data(
+    func objectTask<T: Decodable>(
         for request: URLRequest,
-        completion: @escaping (Result<Data, Error>) -> Void
+        completion: @escaping (Result<T, Error>) -> Void
     ) -> URLSessionTask {
-        let fulfillCompletionOnTheMainThread: (Result<Data, Error>) -> Void = { result in
-            DispatchQueue.main.async {
-                completion(result)
+        let decoder = JSONDecoder()
+        
+        let task = dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(NSError(domain: "DataError", code: 0, userInfo: nil)))
+                return
+            }
+            
+            do {
+                let object = try decoder.decode(T.self, from: data)
+                completion(.success(object))
+            }
+            catch {
+                print("[objectTask]: Ошибка декодирования: \(error.localizedDescription)")
+                completion(.failure(error))
             }
         }
-        
-        let task = dataTask(with: request, completionHandler: { data, response, error in
-            if let data, let response, let statusCode = (response as? HTTPURLResponse)?.statusCode {
-                if 200 ..< 300 ~= statusCode {
-                    fulfillCompletionOnTheMainThread(.success(data))
-                } else {
-                    fulfillCompletionOnTheMainThread(.failure(NetworkError.httpStatusCode(statusCode, data)))
-                }
-            } else if let error {
-                fulfillCompletionOnTheMainThread(.failure(NetworkError.urlRequestError(error)))
-            } else {
-                fulfillCompletionOnTheMainThread(.failure(NetworkError.urlSessionError))
-            }
-        })
-        
         return task
     }
 }
