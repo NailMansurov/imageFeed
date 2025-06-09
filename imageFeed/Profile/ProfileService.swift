@@ -27,8 +27,6 @@ final class ProfileService {
     private init() {}
     
     private(set) var profile: Profile?
-//    private let urlSession = URLSession.shared
-//    private var task: URLSessionTask?
     
     func getRequest(url: URL, bearerToken: String) -> URLRequest {
         var request = URLRequest(url: url)

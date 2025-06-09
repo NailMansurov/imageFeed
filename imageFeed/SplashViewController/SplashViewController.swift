@@ -57,6 +57,8 @@ final class SplashViewController: UIViewController {
     func presentAuthViewController() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
+        print("3333333")
+        
         guard let authVC = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else {
             return
         }
@@ -68,6 +70,7 @@ final class SplashViewController: UIViewController {
         navigationController.modalPresentationStyle = .fullScreen
         
         present(navigationController, animated: true, completion: nil)
+        print("444444")
     }
     
     private func fetchProfile(_ token: String) {
@@ -83,6 +86,7 @@ final class SplashViewController: UIViewController {
                 let username = profile.username
                 
                 ProfileImageService.shared.fetchProfileImageURL(username: username) { _ in }
+                print("22222222222222")
                 self.switchToTabBarController()
             case .failure:
                 print("[fetchProfile]: Ошибка профиля")
