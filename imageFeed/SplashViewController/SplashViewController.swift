@@ -1,16 +1,30 @@
 import UIKit
-import ProgressHUD
+import SwiftKeychainWrapper
 
 final class SplashViewController: UIViewController {
     private let oauth2Service = OAuth2Service.shared
     private let oauth2TokenStorage = OAuth2TokenStorage.shared
     private let profileService = ProfileService.shared
     
+    private enum constraintsConstants {
+        static let splashLogoWidth: CGFloat = 60
+        static let splashLogoHeight: CGFloat = 60
+    }
+    
+    private lazy var splashLogoImageView: UIImageView = {
+        let imageView = UIImageView(image: R.image.splash_screen_logo())
+        view.addSubview(imageView)
+        return imageView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .ypBlack
+        //clearKeychain()
         
+        setupUI()
+        setupConstraints()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -24,18 +38,22 @@ final class SplashViewController: UIViewController {
             print("Token is nil, showing authentication screen")
         }
         
+        
     }
     
-    private enum constraintsConstants {
-        static let splashLogoWidth: CGFloat = 60
-        static let splashLogoHeight: CGFloat = 60
-    }
     
-    private lazy var splashLogoImageView: UIImageView = {
-        let imageView = UIImageView(image: R.image.splash_screen_logo())
-        view.addSubview(imageView)
-        return imageView
-    }()
+    
+    func clearKeychain() {
+        let keychain = KeychainWrapper.standard
+            
+            // Удаляет все данные для bundle identifier вашего приложения
+            keychain.removeAllKeys()
+            
+            // Альтернативно, можно использовать (для старых версий):
+            // KeychainWrapper.standard.removeAllKeys()
+            
+            print("Keychain полностью очищен")
+    }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
@@ -74,10 +92,10 @@ final class SplashViewController: UIViewController {
     }
     
     private func fetchProfile(_ token: String) {
-        UIBlockingProgresssHUD.show()
+        UIBlockingProgressHUD.show()
         
         profileService.fetchProfile(token) { [weak self] result in
-            UIBlockingProgresssHUD.dismiss()
+            UIBlockingProgressHUD.dismiss()
             
             guard let self else { return }
             
@@ -101,12 +119,12 @@ extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
         vc.dismiss(animated: true)
         
-        UIBlockingProgresssHUD.show()
+        UIBlockingProgressHUD.show()
         
         oauth2Service.fetchOAuthToken(code) { [weak self] result in
             guard let self else { return }
             
-            defer { UIBlockingProgresssHUD.dismiss() }
+            defer { UIBlockingProgressHUD.dismiss() }
             
             switch result {
             case .success(let token):

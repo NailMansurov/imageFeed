@@ -1,4 +1,4 @@
-import UIKit
+@preconcurrency import UIKit
 import WebKit
 
 enum WebViewConstants {
@@ -86,7 +86,7 @@ extension WebViewViewController: WKNavigationDelegate {
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
         if let code = code(from: navigationAction) {
-            UIBlockingProgresssHUD.show()
+            UIBlockingProgressHUD.show()
             
             delegate?.webViewViewController(self, didAuthenticateWithCode: code)
             
@@ -109,5 +109,4 @@ extension WebViewViewController: WKNavigationDelegate {
             return nil
         }
     }
-    
 }

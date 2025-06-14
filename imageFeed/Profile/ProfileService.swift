@@ -14,7 +14,7 @@ struct Profile {
     }
     
     var name: String {
-        return "\(firstName ?? "") \(lastName ?? "")"
+        return "\(firstName ?? "") \(lastName ?? "")".trimmingCharacters(in: .whitespaces)
     }
     
     var loginName: String {
@@ -57,7 +57,6 @@ final class ProfileService {
                     )
                     self?.profile = profile
                     completion(.success(profile))
-                    print("Получены данные профиля \(profile)")
                 case .failure(let error):
                     completion(.failure(error))
                     print("[fetchProfile]: Ошибка получения данных профиля: \(error.localizedDescription)")

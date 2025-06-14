@@ -69,14 +69,9 @@ final class ProfileViewController: UIViewController {
     
     private lazy var logoutButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(R.image.logoutButton(), for: .normal)
-        button.addTarget(
-            self,
-            action: #selector(didTapLogoutButton),
-            for: .touchUpInside
-        )
-        view.addSubview(button)
-        return button
+               button.setImage(R.image.logoutButton(), for: .normal)
+               view.addSubview(button)
+               return button
     }()
     
     // MARK: - Lifecycle
@@ -94,11 +89,7 @@ final class ProfileViewController: UIViewController {
             
         }
         
-        view.backgroundColor = R.color.ypBlack()
         
-        setupUI()
-        setupConstraints()
-        updateAvatar()
         
         DispatchQueue.main.async{
             if let profile = self.profileService.profile {
@@ -107,6 +98,12 @@ final class ProfileViewController: UIViewController {
                 print("Профиль еще не загружен")
             }
         }
+        
+        view.backgroundColor = R.color.ypBlack()
+        
+        setupUI()
+        setupConstraints()
+        updateAvatar()
         
         ProfileImageService.shared.fetchAvatarURL(into: avatarImageView)
         
@@ -185,12 +182,5 @@ final class ProfileViewController: UIViewController {
             logoutButton.widthAnchor.constraint(equalToConstant: Constants.logoutButtonWidth),
             logoutButton.heightAnchor.constraint(equalToConstant: Constants.logoutButtonHeight)
         ])
-    }
-    
-    @objc
-    private func didTapLogoutButton() {
-        print("LogOut")
-        KeychainWrapper.standard.removeObject(forKey: OAuth2TokenStorage.shared.tokenKey)
-        presentAuthViewController()
     }
 }

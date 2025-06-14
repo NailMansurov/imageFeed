@@ -1,3 +1,5 @@
+import UIKit
+
 struct ProfileResult: Codable {
     let username: String
     let firstName: String?
