@@ -38,6 +38,7 @@ final class OAuth2Service {
     
     func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
+        completion(.failure(AuthServiceError.invalidRequest))
         
         guard lastCode != code else{
             print("[fetchOAuthToken]: Повторный запрос")

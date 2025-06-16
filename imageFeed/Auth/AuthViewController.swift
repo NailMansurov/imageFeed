@@ -70,6 +70,8 @@ extension AuthViewController: WebViewViewControllerDelegate {
                 switch result {
                 case .success(let token):
                     print("Авторизация пройдена, получен токен: \(token)")
+                    //vc.dismiss(animated: true)
+                    self.navigationController?.popToViewController(self, animated: true)
                 case .failure(let error):
                     print("[webViewViewController]: Ошибка авторизации \(error.localizedDescription)")
                     self.showErrorAlert()

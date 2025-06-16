@@ -15,7 +15,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		D169E47D2DD63583001DB683 /* imageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = imageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D169E47D2DD63583001DB683 /* imageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = imageFeed.app; path = "/Users/mansurovnail/projects/imageFeed/build/Debug-iphoneos/imageFeed.app"; sourceTree = "<absolute>"; };
 		D169E4B32DD65B71001DB683 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -68,7 +68,6 @@
 			isa = PBXGroup;
 			children = (
 				D1D327662D91903300AC75AA /* imageFeed */,
-				D169E47D2DD63583001DB683 /* imageFeed.app */,
 				D169E4B22DD65B70001DB683 /* Frameworks */,
 			);
 			sourceTree = "<group>";

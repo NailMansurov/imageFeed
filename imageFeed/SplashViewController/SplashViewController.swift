@@ -43,17 +43,17 @@ final class SplashViewController: UIViewController {
     
     
     
-    func clearKeychain() {
-        let keychain = KeychainWrapper.standard
-            
-            // Удаляет все данные для bundle identifier вашего приложения
-            keychain.removeAllKeys()
-            
-            // Альтернативно, можно использовать (для старых версий):
-            // KeychainWrapper.standard.removeAllKeys()
-            
-            print("Keychain полностью очищен")
-    }
+//    func clearKeychain() {
+//        let keychain = KeychainWrapper.standard
+//            
+//            // Удаляет все данные для bundle identifier вашего приложения
+//            keychain.removeAllKeys()
+//            
+//            // Альтернативно, можно использовать (для старых версий):
+//            // KeychainWrapper.standard.removeAllKeys()
+//            
+//            print("Keychain полностью очищен")
+//    }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
@@ -121,22 +121,22 @@ extension SplashViewController: AuthViewControllerDelegate {
         
         UIBlockingProgressHUD.show()
         
-        oauth2Service.fetchOAuthToken(code) { [weak self] result in
-            guard let self else { return }
-            
-            defer { UIBlockingProgressHUD.dismiss() }
-            
-            switch result {
-            case .success(let token):
-                print("Токен получен: \(token)")
-                self.oauth2TokenStorage.token = token
-                self.fetchProfile(token)
-            case .failure(let error):
-                print("[authViewController]: Ошибка при получении токена: \(error.localizedDescription)")
-                self.presentAuthViewController()
-                break
-            }
-        }
+//        oauth2Service.fetchOAuthToken(code) { [weak self] result in
+//            guard let self else { return }
+//            
+//            defer { UIBlockingProgressHUD.dismiss() }
+//            
+//            switch result {
+//            case .success(let token):
+//                print("Токен получен: \(token)")
+//                self.oauth2TokenStorage.token = token
+//                self.fetchProfile(token)
+//            case .failure(let error):
+//                print("[authViewController]: Ошибка при получении токена: \(error.localizedDescription)")
+//                self.presentAuthViewController()
+//                break
+//            }
+//        }
     }
     
     func didAuthenticate(_ vc: AuthViewController) {
