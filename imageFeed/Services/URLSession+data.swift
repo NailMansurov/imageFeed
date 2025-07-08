@@ -22,15 +22,44 @@ extension URLSession {
                 if 200 ..< 300 ~= statusCode {
                     fulfillCompletionOnTheMainThread(.success(data))
                 } else {
+                    print("[data]: Ошибка: \(statusCode), \(data).")
                     fulfillCompletionOnTheMainThread(.failure(NetworkError.httpStatusCode(statusCode, data)))
                 }
             } else if let error {
+                print("[data]: Сетевая ошибка dataTask: \(error).")
                 fulfillCompletionOnTheMainThread(.failure(NetworkError.urlRequestError(error)))
             } else {
+                print("[data]: Другая ошибка.")
                 fulfillCompletionOnTheMainThread(.failure(NetworkError.urlSessionError))
             }
         })
         
         return task
+    }
+    
+    func objectTask<T: Decodable>(
+        for request: URLRequest,
+        completion: @escaping (Result<T, Error>) -> Void
+    ) -> URLSessionTask {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        
+        let task = data(for: request) { (result: Result<Data, Error>) in
+            switch result {
+            case .success(let data):
+                do {
+                    let decoded = try decoder.decode(T.self, from: data)
+                    completion(.success(decoded))
+                } catch {
+                    print("[objectTask]: Ошибка декодирования: \(error.localizedDescription), Данные: \(String(data: data, encoding: .utf8) ?? "")")
+                    completion(.failure(error))
+                }
+                case .failure(let error):
+                print("[objectTask]: Ошибка загрузки данных: \(error)")
+                completion(.failure(error))
+            }
+        }
+        return task
+        
     }
 }

@@ -11,7 +11,7 @@ protocol WebViewViewControllerDelegate: AnyObject {
 }
 
 final class WebViewViewController: UIViewController {
-    
+
     // MARK: - Private properties
     
     @IBOutlet private var webView: WKWebView!
