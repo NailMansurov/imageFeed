@@ -28,6 +28,8 @@ final class ProfileViewController: UIViewController {
     
     // MARK: - Private properties
     
+    private let profileService = ProfileService.shared
+    
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView(image: R.image.avatarPhoto())
         imageView.layer.cornerRadius = Constants.avatarCornerRadius
@@ -77,22 +79,23 @@ final class ProfileViewController: UIViewController {
         setupUI()
         setupConstraints()
         
-        ProfileService.shared.fetchProfile(OAuth2TokenStorage.shared.token ?? "") { [weak self] result in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let profile):
-                    self.nameLabel.text = profile.name
-                    self.descriptionLabel.text = profile.bio
-                    self.loginLabel.text = profile.loginName
-                case .failure(let error):
-                    print("[viewDidLoad ProfileViewController] Ошибка при загрузке профиля: \(error)")
-                }
+        DispatchQueue.main.async{
+            if let profile = self.profileService.profile {
+                self.updateProfileDetails(profile: profile)
+            } else {
+                print("Профиль еще не загружен")
             }
         }
+
     }
     
     // MARK: - Private methods
+    
+    private func updateProfileDetails(profile: Profile) {
+        nameLabel.text = profile.name
+        loginLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio
+    }
     
     private func setupUI() {
         view.addSubviews(

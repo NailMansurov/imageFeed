@@ -4,6 +4,7 @@ final class SplashViewController: UIViewController {
     private let ShowAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     private let oauth2Service = OAuth2Service.shared
     private let oauth2TokenStorage = OAuth2TokenStorage.shared
+    private let profileService = ProfileService.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -13,7 +14,8 @@ final class SplashViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if oauth2TokenStorage.token != nil {
+        if let token = oauth2TokenStorage.token {
+            fetchProfile(token)
             switchToTabBarController()
         } else {
             performSegue(withIdentifier: ShowAuthenticationScreenSegueIdentifier, sender: nil)
@@ -59,14 +61,28 @@ extension SplashViewController: AuthViewControllerDelegate {
             case .success(let token):
                 print("Токен получен: \(token)")
                 self.oauth2TokenStorage.token = token
-                DispatchQueue.main.async {
-                    self.dismiss(animated: true)
-                }
+                self.fetchProfile(token)
             case .failure(let error):
-                print("Ошибка при получении токена: \(error)")
+                print("[authViewController in SplashViewController's extension]: Ошибка при получении токена: \(error)")
                 break
             }
             
+        }
+    }
+    
+    private func fetchProfile(_ token: String) {
+        UIBlockingProgressHUD.show()
+        profileService.fetchProfile(token) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            
+            guard let self = self else { return }
+            
+            switch result {
+            case .success:
+                self.switchToTabBarController()
+            case .failure:
+                print("[fetchProfile in SplashViewController's extension]: Ошибка при получении профиля.")
+            }
         }
     }
 }

@@ -2,7 +2,10 @@ import Foundation
 
 final class ProfileService {
     static let shared = ProfileService()
+    
+    private(set) var profile: Profile?
     private init() {}
+    
     private func makeURLRequest (url: URL, token: String) -> URLRequest {
         var request = URLRequest(url: url)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
@@ -11,12 +14,6 @@ final class ProfileService {
     }
     
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
-        guard !token.isEmpty else {
-            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: ""])))
-            print("[fetchProfile]: Токен не получен")
-            return
-        }
-        
         guard let baseURL = Constants.defaultBaseURL,
               let url = URL(string: "/me", relativeTo: baseURL)
         else {
@@ -35,6 +32,7 @@ final class ProfileService {
                     username: profileResult.username,
                     name: profileResult.firstName + " " + profileResult.lastName,
                     bio: profileResult.bio ?? "")
+                self.profile = profile
                 completion(.success(profile))
                 print("Профиль получен: \(profile)")
             case .failure(let error):
