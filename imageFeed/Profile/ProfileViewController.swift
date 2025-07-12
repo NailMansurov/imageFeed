@@ -76,6 +76,20 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupConstraints()
+        
+        ProfileService.shared.fetchProfile(OAuth2TokenStorage.shared.token ?? "") { [weak self] result in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let profile):
+                    self.nameLabel.text = profile.name
+                    self.descriptionLabel.text = profile.bio
+                    self.loginLabel.text = profile.loginName
+                case .failure(let error):
+                    print("[viewDidLoad ProfileViewController] Ошибка при загрузке профиля: \(error)")
+                }
+            }
+        }
     }
     
     // MARK: - Private methods
