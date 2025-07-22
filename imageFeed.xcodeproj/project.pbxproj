@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D169E4B42DD65B71001DB683 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D169E4B32DD65B71001DB683 /* WebKit.framework */; };
 		D1CBB8A02E0AFC9500AFD81B /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = D1CBB89F2E0AFC9500AFD81B /* ProgressHUD */; };
+		D1CBB94B2E2AE45500AFD81B /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = D1CBB94A2E2AE45500AFD81B /* Kingfisher */; };
 		D1E8D6652DD2567D00936493 /* RswiftLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = D1E8D6642DD2567D00936493 /* RswiftLibrary */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1CBB94B2E2AE45500AFD81B /* Kingfisher in Frameworks */,
 				D1CBB8A02E0AFC9500AFD81B /* ProgressHUD in Frameworks */,
 				D169E4B42DD65B71001DB683 /* WebKit.framework in Frameworks */,
 				D1E8D6652DD2567D00936493 /* RswiftLibrary in Frameworks */,
@@ -92,6 +94,7 @@
 			packageProductDependencies = (
 				D1E8D6642DD2567D00936493 /* RswiftLibrary */,
 				D1CBB89F2E0AFC9500AFD81B /* ProgressHUD */,
+				D1CBB94A2E2AE45500AFD81B /* Kingfisher */,
 			);
 			productName = imageFeed;
 			productReference = D169E47D2DD63583001DB683 /* imageFeed.app */;
@@ -124,6 +127,7 @@
 			packageReferences = (
 				D1E8D6632DD2567D00936493 /* XCRemoteSwiftPackageReference "R" */,
 				D1CBB89E2E0AFC9500AFD81B /* XCRemoteSwiftPackageReference "ProgressHUD" */,
+				D1CBB9492E2AE45500AFD81B /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D1D3275B2D91903200AC75AA;
@@ -380,6 +384,14 @@
 				minimumVersion = 14.1.3;
 			};
 		};
+		D1CBB9492E2AE45500AFD81B /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.5.0;
+			};
+		};
 		D1E8D6632DD2567D00936493 /* XCRemoteSwiftPackageReference "R" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mac-cain13/R.swift";
@@ -395,6 +407,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D1CBB89E2E0AFC9500AFD81B /* XCRemoteSwiftPackageReference "ProgressHUD" */;
 			productName = ProgressHUD;
+		};
+		D1CBB94A2E2AE45500AFD81B /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D1CBB9492E2AE45500AFD81B /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 		D1E8D6642DD2567D00936493 /* RswiftLibrary */ = {
 			isa = XCSwiftPackageProductDependency;

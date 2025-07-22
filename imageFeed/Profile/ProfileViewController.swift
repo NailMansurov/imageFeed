@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
@@ -29,6 +30,8 @@ final class ProfileViewController: UIViewController {
     // MARK: - Private properties
     
     private let profileService = ProfileService.shared
+    
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView(image: R.image.avatarPhoto())
@@ -79,6 +82,35 @@ final class ProfileViewController: UIViewController {
         setupUI()
         setupConstraints()
         
+        if let username = profileService.profile?.username {
+            ProfileImageService.shared.fetchProfileImageURL(username: username) { result in
+                switch result {
+                case .success(let urlString):
+                    print("Аватарка успешно загружена: \(urlString)")
+                    DispatchQueue.main.async {
+                        self.updateAvatar()
+                    }
+                case .failure(let error):
+                    print("Ошибка загрузки аватарки: \(error)")
+                }
+            }
+        } else {
+            print("Имя пользователя не найдено")
+        }
+        
+        let urlForImage = String(describing: ProfileImageService.shared.avatarURL)
+                print("Image URL = \(urlForImage)")
+        
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(forName: ProfileImageService.didChangeNotification,
+                         object: nil,
+                         queue: .main,
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()
+            }
+        updateAvatar()
+        
         DispatchQueue.main.async{
             if let profile = self.profileService.profile {
                 self.updateProfileDetails(profile: profile)
@@ -90,6 +122,17 @@ final class ProfileViewController: UIViewController {
     }
     
     // MARK: - Private methods
+    
+    private func updateAvatar() {
+            guard
+                let profileImageURL = ProfileImageService.shared.avatarURL,
+                let url = URL(string: profileImageURL)
+        else {
+                print("Не удалось загрузить аватар")
+                return
+            }
+        avatarImageView.kf.setImage(with: url)
+        }
     
     private func updateProfileDetails(profile: Profile) {
         nameLabel.text = profile.name
