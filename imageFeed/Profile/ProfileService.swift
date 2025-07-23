@@ -4,6 +4,7 @@ final class ProfileService {
     static let shared = ProfileService()
     
     private(set) var profile: Profile?
+    private var task: URLSessionTask?
     private init() {}
     
     private func makeURLRequest (url: URL, token: String) -> URLRequest {
@@ -14,23 +15,29 @@ final class ProfileService {
     }
     
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        
+        if task != nil {
+            task?.cancel()
+        }
         guard let baseURL = Constants.defaultBaseURL,
               let url = URL(string: "/me", relativeTo: baseURL)
         else {
-            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: ""])))
             print("[fetchProfile]: Неверный defaultBaseURL")
+            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: ""])))
             return
         }
         
         let request = makeURLRequest(url: url, token: token)
         
-        URLSession.shared.objectTask(for: request) { (result: Result<ProfileResult, Error>) in
-            
+        let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>) in
+            guard let self else { return }
             switch result {
-            case . success(let profileResult):
+            case .success(let profileResult):
                 let profile = Profile(
                     username: profileResult.username,
                     name: profileResult.firstName + " " + profileResult.lastName,
+                    loginName: "@\(profileResult.username)",
                     bio: profileResult.bio ?? "")
                 self.profile = profile
                 completion(.success(profile))
@@ -39,7 +46,9 @@ final class ProfileService {
                 completion(.failure(error))
                 print("[fetchProfile]: Ошибка получения данных профиля: \(error)")
             }
-            
-        }.resume()
+            self.task = nil
+        }
+        self.task = task
+        task.resume()
     }
 }

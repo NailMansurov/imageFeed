@@ -6,7 +6,6 @@ enum AuthServiceError: Error {
 
 final class OAuth2Service {
     static let shared = OAuth2Service()
-    // Added task and lastCode
     private var task: URLSessionTask?
     private var lastCode: String?
     private init() {}
@@ -39,25 +38,7 @@ final class OAuth2Service {
     
     func fetchOAuthToken(_ code: String,
                          completion: @escaping (Result<String, Error>) -> Void) {
-        //        guard let request = makeOAuthTokenRequest(code: code) else {
-        //            DispatchQueue.main.async {
-        //                completion(.failure(NSError(domain: "InvalidRequest", code: 0)))
-        //            }
-        //            return
-        //        }
         assert(Thread.isMainThread)
-//        if task != nil {
-//            if lastCode != code {
-//                task?.cancel()
-//            } else {
-//                completion(.failure(AuthServiceError.invalidRequest))
-//                return
-//            }
-//        } else {
-//            if lastCode == code {
-//                completion(.failure(AuthServiceError.invalidRequest))
-//            }
-//        }
         
         guard lastCode != code else {
             print("[fetchOAuthToken]: code совпадает с предыдущим lastCode == code")
@@ -90,50 +71,5 @@ final class OAuth2Service {
         
         self.task = task
         task.resume()
-        
-        //        let task = URLSession.shared.data(for: request) { result in
-        //            switch result {
-        //            case .success(let data):
-        //                do {
-        //                    let decoder = JSONDecoder()
-        //                    decoder.keyDecodingStrategy = .convertFromSnakeCase
-        //                    let decoded = try decoder.decode(OAuthTokenResponseBody.self, from: data)
-        //                    let token = decoded.accessToken
-        //                    OAuth2TokenStorage.shared.token = token
-        //                    DispatchQueue.main.async {
-        //                        completion(.success(token))
-        //                    }
-        //                } catch {
-        //                    print("Ошибка при декодирвоании \(error)")
-        //                    DispatchQueue.main.async {
-        //                        completion(.failure(error))
-        //                    }
-        //                }
-        //
-        //            case .failure(let error):
-        //                if let networkError = error as? NetworkError {
-        //                    switch networkError {
-        //                    case .httpStatusCode(let code, let data):
-        //                        print("Ошибка, ответ сервера: \(code)")
-        //                        if let data = data, let errorString = String(data: data, encoding: .utf8) {
-        //                            print("Ответ сервера: \(errorString)")
-        //                        } else {
-        //                            print("Нет ответа сервера или не удалось декодировать его")
-        //                        }
-        //                    case .urlRequestError(let requestError):
-        //                        print("Ошибка: ответ сервера: \(requestError)")
-        //                    case .urlSessionError:
-        //                        print("Ошибка URLSession")
-        //                    }
-        //                } else {
-        //                    print("Ошибка: \(error)")
-        //                }
-        //                DispatchQueue.main.async {
-        //                    completion(.failure(error))
-        //                }
-        //            }
-        //        }
-        //        task.resume()
-        //    }
     }
 }

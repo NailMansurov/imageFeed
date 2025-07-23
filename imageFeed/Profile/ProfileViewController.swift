@@ -79,27 +79,6 @@ final class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
-        setupConstraints()
-        
-        if let username = profileService.profile?.username {
-            ProfileImageService.shared.fetchProfileImageURL(username: username) { result in
-                switch result {
-                case .success(let urlString):
-                    print("Аватарка успешно загружена: \(urlString)")
-                    DispatchQueue.main.async {
-                        self.updateAvatar()
-                    }
-                case .failure(let error):
-                    print("Ошибка загрузки аватарки: \(error)")
-                }
-            }
-        } else {
-            print("Имя пользователя не найдено")
-        }
-        
-        let urlForImage = String(describing: ProfileImageService.shared.avatarURL)
-                print("Image URL = \(urlForImage)")
         
         profileImageServiceObserver = NotificationCenter.default
             .addObserver(forName: ProfileImageService.didChangeNotification,
@@ -115,24 +94,40 @@ final class ProfileViewController: UIViewController {
             if let profile = self.profileService.profile {
                 self.updateProfileDetails(profile: profile)
             } else {
-                print("Профиль еще не загружен")
+                print("[viewDidLoad in ProfileViewController]: Профиль еще не загружен.")
             }
         }
-
+        
+        setupUI()
+        setupConstraints()
+        
     }
     
     // MARK: - Private methods
     
     private func updateAvatar() {
-            guard
-                let profileImageURL = ProfileImageService.shared.avatarURL,
-                let url = URL(string: profileImageURL)
+        guard
+            let avatarURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: avatarURL)
         else {
-                print("Не удалось загрузить аватар")
-                return
-            }
-        avatarImageView.kf.setImage(with: url)
+            print("[UpdateAvatar]: Не удалось загрузить аватар.")
+            return
         }
+        let placeholderImage = UIImage(systemName: "person.circle.fill")?
+            .withTintColor(.lightGray, renderingMode: .alwaysOriginal)
+            .withConfiguration(UIImage.SymbolConfiguration(pointSize: 70, weight: .regular, scale: .large))
+        
+        let processor = RoundCornerImageProcessor(cornerRadius: 35)
+        avatarImageView.kf.indicatorType = .activity
+        avatarImageView.kf.setImage(
+            with: url,
+            placeholder: placeholderImage,
+            options: [
+                .processor(processor),
+                .scaleFactor(UIScreen.main.scale),
+                .cacheOriginalImage,
+                .forceRefresh])
+    }
     
     private func updateProfileDetails(profile: Profile) {
         nameLabel.text = profile.name

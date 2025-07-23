@@ -43,6 +43,15 @@ final class AuthViewController: UIViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = R.color.ypBlack()
     }
+    
+//    private func showErrorAlert() {
+//            let alert = UIAlertController(title: "Что-то пошло не так",
+//                                          message: "Не удалось войти в систему",
+//                                          preferredStyle: .alert)
+//            alert.addAction(UIAlertAction(title: "OK", style: .default))
+//            
+//            present(alert, animated: true)
+//        }
 }
 
 // MARK: - Extensions
