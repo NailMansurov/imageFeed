@@ -57,12 +57,12 @@ final class OAuth2Service {
             return
         }
         
-        let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+        let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, any Error>) in
             switch result {
             case .success(let decoded):
                 completion(.success(decoded.accessToken))
             case .failure(let error):
-                print("[fetchOAuthToken]: Ошибка: \(error)")
+                print("[fetchOAuthToken]: Ошибка: \(error.localizedDescription)")
                 completion(.failure(error))
             }
             self?.task = nil

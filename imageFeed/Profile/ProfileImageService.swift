@@ -28,6 +28,7 @@ final class ProfileImageService {
             case .success(let userResult):
                 self.avatarURL = userResult.profileImage.small
                 completion(.success(userResult.profileImage.small))
+                
                 NotificationCenter.default
                     .post(
                         name: ProfileImageService.didChangeNotification,

@@ -80,6 +80,14 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        DispatchQueue.main.async{
+            if let profile = self.profileService.profile {
+                self.updateProfileDetails(profile: profile)
+            } else {
+                print("[viewDidLoad in ProfileViewController]: Профиль еще не загружен.")
+            }
+        }
+        
         profileImageServiceObserver = NotificationCenter.default
             .addObserver(forName: ProfileImageService.didChangeNotification,
                          object: nil,
@@ -89,14 +97,6 @@ final class ProfileViewController: UIViewController {
                 self.updateAvatar()
             }
         updateAvatar()
-        
-        DispatchQueue.main.async{
-            if let profile = self.profileService.profile {
-                self.updateProfileDetails(profile: profile)
-            } else {
-                print("[viewDidLoad in ProfileViewController]: Профиль еще не загружен.")
-            }
-        }
         
         setupUI()
         setupConstraints()

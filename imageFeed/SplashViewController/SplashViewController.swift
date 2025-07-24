@@ -16,7 +16,6 @@ final class SplashViewController: UIViewController {
         
         if let token = oauth2TokenStorage.token {
             fetchProfile(token)
-            switchToTabBarController()
         } else {
             performSegue(withIdentifier: ShowAuthenticationScreenSegueIdentifier, sender: nil)
         }
@@ -30,7 +29,9 @@ final class SplashViewController: UIViewController {
         }
         let tabBarController = UIStoryboard(name: "Main", bundle: .main)
             .instantiateViewController(withIdentifier: "TabBarViewController")
-        window.rootViewController = tabBarController
+        DispatchQueue.main.async {
+            window.rootViewController = tabBarController
+        }
     }
     
 }
@@ -53,30 +54,25 @@ extension SplashViewController {
 }
 
 extension SplashViewController: AuthViewControllerDelegate {
-    func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-        oauth2Service.fetchOAuthToken(code) { [weak self] result in
-            UIBlockingProgressHUD.dismiss()
-            guard let self = self else { return }
-            switch result {
-            case .success(let token):
-                print("Токен получен: \(token)")
-                self.oauth2TokenStorage.token = token
-                self.fetchProfile(token)
-            case .failure(let error):
-                print("[authViewController in SplashViewController's extension]: Ошибка при получении токена: \(error)")
-                break
-            }
-            
+    func didAuthenticate(_ vc: AuthViewController) {
+        vc.dismiss(animated: true)
+        
+        guard let token = OAuth2TokenStorage.shared.token else {
+            print("[AuthViewController in SplashViewController's extension]: Токен не получен")
+            assertionFailure("Токен не получен")
+            return
         }
+        
+        fetchProfile(token)
     }
     
-    private func fetchProfile(_ token: String) {
+    func fetchProfile(_ token: String) {
         UIBlockingProgressHUD.show()
         
         profileService.fetchProfile(token) { [weak self] result in
             UIBlockingProgressHUD.dismiss()
             
-            guard let self = self else { return }
+            guard let self else { return }
             
             switch result {
             case .success(let profile):
