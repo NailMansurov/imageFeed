@@ -43,7 +43,7 @@ final class ProfileViewController: UIViewController {
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Екатерина Новикова"
+        //label.text = "Екатерина Новикова"
         label.textColor = R.color.ypWhite()
         label.font = .systemFont(ofSize: Constants.nameLabelFontSize, weight: .bold)
         view.addSubview(label)
@@ -52,7 +52,7 @@ final class ProfileViewController: UIViewController {
     
     private lazy var loginLabel: UILabel = {
         let label = UILabel()
-        label.text = "@ekaterina_nov"
+        //label.text = "@ekaterina_nov"
         label.textColor = R.color.ypGrey()
         label.font = .systemFont(ofSize: Constants.loginLabelFontSize)
         view.addSubview(label)
@@ -61,7 +61,7 @@ final class ProfileViewController: UIViewController {
     
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.text = "Hello, world!"
+        //label.text = "Hello, world!"
         label.textColor = R.color.ypWhite()
         label.font = .systemFont(ofSize: Constants.descriptionLabelFontSize)
         view.addSubview(label)
@@ -96,6 +96,9 @@ final class ProfileViewController: UIViewController {
                 guard let self = self else { return }
                 self.updateAvatar()
             }
+        
+        view.backgroundColor = R.color.ypBlack()
+        
         updateAvatar()
         
         setupUI()
