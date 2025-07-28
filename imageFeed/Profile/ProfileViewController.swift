@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
@@ -28,6 +29,10 @@ final class ProfileViewController: UIViewController {
     
     // MARK: - Private properties
     
+    private let profileService = ProfileService.shared
+    
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView(image: R.image.avatarPhoto())
         imageView.layer.cornerRadius = Constants.avatarCornerRadius
@@ -38,7 +43,6 @@ final class ProfileViewController: UIViewController {
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Екатерина Новикова"
         label.textColor = R.color.ypWhite()
         label.font = .systemFont(ofSize: Constants.nameLabelFontSize, weight: .bold)
         view.addSubview(label)
@@ -47,7 +51,6 @@ final class ProfileViewController: UIViewController {
     
     private lazy var loginLabel: UILabel = {
         let label = UILabel()
-        label.text = "@ekaterina_nov"
         label.textColor = R.color.ypGrey()
         label.font = .systemFont(ofSize: Constants.loginLabelFontSize)
         view.addSubview(label)
@@ -56,7 +59,6 @@ final class ProfileViewController: UIViewController {
     
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.text = "Hello, world!"
         label.textColor = R.color.ypWhite()
         label.font = .systemFont(ofSize: Constants.descriptionLabelFontSize)
         view.addSubview(label)
@@ -74,11 +76,62 @@ final class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let profile = self.profileService.profile {
+            self.updateProfileDetails(profile: profile)
+        } else {
+            print("[viewDidLoad in ProfileViewController]: Профиль еще не загружен.")
+        }
+        
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(forName: ProfileImageService.didChangeNotification,
+                         object: nil,
+                         queue: .main,
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()
+            }
+        
+        view.backgroundColor = R.color.ypBlack()
+        
+        updateAvatar()
+        
         setupUI()
         setupConstraints()
+        
     }
     
     // MARK: - Private methods
+    
+    private func updateAvatar() {
+        guard
+            let avatarURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: avatarURL)
+        else {
+            print("[UpdateAvatar]: Не удалось загрузить аватар.")
+            return
+        }
+        let placeholderImage = UIImage(systemName: "person.circle.fill")?
+            .withTintColor(.lightGray, renderingMode: .alwaysOriginal)
+            .withConfiguration(UIImage.SymbolConfiguration(pointSize: 70, weight: .regular, scale: .large))
+        
+        let processor = RoundCornerImageProcessor(cornerRadius: 35)
+        avatarImageView.kf.indicatorType = .activity
+        avatarImageView.kf.setImage(
+            with: url,
+            placeholder: placeholderImage,
+            options: [
+                .processor(processor),
+                .scaleFactor(UIScreen.main.scale),
+                .cacheOriginalImage,
+                .forceRefresh])
+    }
+    
+    private func updateProfileDetails(profile: Profile) {
+        nameLabel.text = profile.name
+        loginLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio
+    }
     
     private func setupUI() {
         view.addSubviews(
