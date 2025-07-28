@@ -45,7 +45,7 @@ final class ProfileImageService {
         task.resume()
     }
     
-    func makeProfileImageRequest(_ username: String) -> URLRequest? {
+    private func makeProfileImageRequest(_ username: String) -> URLRequest? {
         guard let baseURL = Constants.defaultBaseURL,
               let url = URL(string: "/users/\(username)", relativeTo: baseURL) else {
             return nil
@@ -57,7 +57,7 @@ final class ProfileImageService {
         }
         
         var request = URLRequest(url: url)
-        request.httpMethod = "GET"
+        request.httpMethod = HTTPMethod.get.rawValue
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }

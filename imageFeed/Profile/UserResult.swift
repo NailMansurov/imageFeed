@@ -1,4 +1,4 @@
-import UIKit
+import Foundation
 
 struct ProfileImage: Codable {
     let small: String
