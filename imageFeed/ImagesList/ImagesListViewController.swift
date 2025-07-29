@@ -2,6 +2,9 @@ import UIKit
 
 final class ImagesListViewController: UIViewController {
     
+    // MARK: - Public properties
+    var photos: [Photo] = []
+    
     // MARK: - Private properties
     
     @IBOutlet private var tableView: UITableView!
@@ -71,6 +74,12 @@ extension ImagesListViewController: UITableViewDataSource {
         configCell(for: imageListCell, with: indexPath)
         
         return imageListCell
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == photos.count - 1 {
+            ImagesListService.shared.fetchPhotosNextPage()
+        }
     }
     
 }

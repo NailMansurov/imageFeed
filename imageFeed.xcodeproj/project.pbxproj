@@ -30,6 +30,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		D1CE3EE22E394B470016E213 /* imageFeedTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = imageFeedTests;
+			sourceTree = "<group>";
+		};
 		D1D327662D91903300AC75AA /* imageFeed */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -69,6 +74,7 @@
 			children = (
 				D1D327662D91903300AC75AA /* imageFeed */,
 				D169E47D2DD63583001DB683 /* imageFeed.app */,
+				D1CE3EE22E394B470016E213 /* imageFeedTests */,
 				D169E4B22DD65B70001DB683 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -110,7 +116,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1620;
+				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1630;
 				TargetAttributes = {
 					D1D327632D91903200AC75AA = {
