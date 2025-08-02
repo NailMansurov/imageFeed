@@ -54,10 +54,6 @@ final class ImagesListViewController: UIViewController {
     
     // MARK: - Overrides
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        UIStatusBarStyle.lightContent
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showSingleImageSequeIdentifier,
            let viewController = segue.destination as? SingleImageViewController,
