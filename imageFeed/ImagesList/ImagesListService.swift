@@ -128,4 +128,10 @@ final class ImagesListService {
         }
         task.resume()
     }
+    
+    func deleteImageList() {
+        photos.removeAll()
+        task = nil
+        lastLoadedPage = nil
+    }
 }

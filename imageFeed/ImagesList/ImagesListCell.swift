@@ -48,12 +48,11 @@ final class ImagesListCell: UITableViewCell {
         } else {
             dateLabel.text = ""
         }
-        //        setLikeButtonImage(isLiked: photo.isLiked)
-        //        setupGradient()
     }
     
     func setIsLiked(photo: Photo) {
-        self.likeButton.imageView?.image = photo.isLiked ? R.image.likeButtonOff() : R.image.likeButtonOn()
+        let image = photo.isLiked ? R.image.likeButtonOn() : R.image.likeButtonOff()
+        likeButton.setImage(image, for: .normal)
     }
     
     func setLoadingIndicator(_ enabled: Bool) {

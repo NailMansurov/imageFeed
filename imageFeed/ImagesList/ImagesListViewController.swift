@@ -106,15 +106,12 @@ extension ImagesListViewController: UITableViewDataSource {
         
         configCell(for: imageListCell, with: photos[indexPath.row])
         
-//        imageListCell.setupGradient()
-        
         return imageListCell
     }
     
     func configCell(for cell: ImagesListCell, with photo: Photo) {
-//        cell.setLoadingIndicator(true)
         cell.configure(with: photo)
-//        cell.setLoadingIndicator(true)
+        cell.setIsLiked(photo: photo)
         cell.delegate = self
     }
 }
@@ -138,10 +135,10 @@ extension ImagesListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let photo = photos[indexPath.row]
-                let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
-                let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
-                let ratio = imageViewWidth / photo.size.width
-                return photo.size.height * ratio + imageInsets.top + imageInsets.bottom
+        let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
+        let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
+        let ratio = imageViewWidth / photo.size.width
+        return photo.size.height * ratio + imageInsets.top + imageInsets.bottom
     }
 }
 
@@ -153,22 +150,23 @@ extension ImagesListViewController: ImagesListCellDelegate {
         UIBlockingProgressHUD.show()
         
         ImagesListService.shared.changeLike(photoId: photo.id, isLike: !photo.isLiked) { result in
-            switch result {
-            case .success:
-                DispatchQueue.main.async {
-                    self.photos = ImagesListService.shared.photos
+            DispatchQueue.main.async {
+                UIBlockingProgressHUD.dismiss()
+                switch result {
+                case .success:
+                    if let newPhoto = ImagesListService.shared.photos.first(where: { $0.id == photo.id }) {
+                        self.photos[indexPath.row] = newPhoto
+                        cell.setIsLiked(photo: newPhoto)
+                    }
+                case .failure:
+                    let alert = UIAlertController(title: "Что-то пошло не так(",
+                                                  message: "Ошибка при установке/снятии лайка",
+                                                  preferredStyle: .alert
+                    )
+                    let action = UIAlertAction(title: "OK", style: .default)
+                    alert.addAction(action)
+                    self.present(alert, animated: true)
                 }
-                cell.setIsLiked(photo: self.photos[indexPath.row])
-                UIBlockingProgressHUD.dismiss()
-            case .failure:
-                UIBlockingProgressHUD.dismiss()
-                let alert = UIAlertController(title: "Что-то пошло не так(",
-                                              message: "Ошибка при установке/снятии лайка",
-                                              preferredStyle: .alert
-                )
-                let action = UIAlertAction(title: "OK", style: .default)
-                alert.addAction(action)
-                self.present(alert, animated: true)
             }
         }
     }
