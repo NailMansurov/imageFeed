@@ -1,6 +1,6 @@
 import Foundation
 
-struct UrlsResult: Decodable {
+struct UrlsResult: Codable {
     let thumb: String
     let full: String
 }

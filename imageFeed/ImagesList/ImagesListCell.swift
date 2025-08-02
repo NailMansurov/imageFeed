@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 protocol ImagesListCellDelegate: AnyObject {
     func imageListCellDidTapLike(_ cell: ImagesListCell)
@@ -21,16 +22,23 @@ final class ImagesListCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-            
-//        fullsizeImageView.kf.cancelDownLoadTask()
+        cellImage.kf.cancelDownloadTask()
+        cellImage.image = R.image.imagePlaceholder()
     }
+    
+    // MARK: - Private methods
+    
+    @IBAction private func didTapLikeButton(_ sender: Any) {
+        delegate?.imageListCellDidTapLike(self)
+    }
+    
     
     // MARK: - Public methods
     
     func configure(with photo: Photo) {
         cellImage.kf.setImage(
             with: URL(string: photo.thumbImageURL),
-            placeholder: UIImage(named: "image_placeholder")
+            placeholder: R.image.imagePlaceholder()
         )
         if let date = photo.createdAt {
             let formatter = DateFormatter()
@@ -40,7 +48,15 @@ final class ImagesListCell: UITableViewCell {
         } else {
             dateLabel.text = ""
         }
-//        setLikeButtonImage(isLiked: photo.isLiked)
-//        setupGradient()
+        //        setLikeButtonImage(isLiked: photo.isLiked)
+        //        setupGradient()
+    }
+    
+    func setIsLiked(photo: Photo) {
+        self.likeButton.imageView?.image = photo.isLiked ? R.image.likeButtonOff() : R.image.likeButtonOn()
+    }
+    
+    func setLoadingIndicator(_ enabled: Bool) {
+        cellImage.kf.indicatorType = enabled ? .activity: .none
     }
 }

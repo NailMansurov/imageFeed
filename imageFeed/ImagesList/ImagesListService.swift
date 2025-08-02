@@ -1,5 +1,10 @@
 import Foundation
 
+enum ImagesListServiceError: Error {
+    case invalidRequest
+}
+
+
 final class ImagesListService {
     static let shared = ImagesListService()
     
@@ -66,30 +71,13 @@ final class ImagesListService {
     }
     
     private func makeImageListRequest(page: Int, perPage: Int) -> URLRequest? {
-        guard let baseURL = Constants.defaultBaseURL,
-              let url = URL(string: "/photos", relativeTo: baseURL) else {
-            print("[makeImageListRequest]: Невозможно создать URL.")
-            return nil
-        }
-        
-        var urlComponents = URLComponents()
-        urlComponents.scheme = "https"
-        urlComponents.host = "api.unsplash.com"
-        urlComponents.path = "/photos"
-        
-        let queryItems = [
-            URLQueryItem(name: "page", value: "\(page)"),
-            URLQueryItem(name: "per_page", value: "\(perPage)")
-        ]
-        urlComponents.queryItems = queryItems
-        
-        guard let url = urlComponents.url else {
-            print("[ImagesListService]: Неверный URL запрос.")
-            return nil
-        }
-        
         guard let token = oauth2TokenStorage.token else {
-            print("[makeProfileImageRequest]: Токен не найден")
+            print("[makeImageListRequest]: Токен не найден.")
+            return nil
+        }
+        
+        guard let url = URL(string: "/photos?page=\(page)&per_page=\(perPage)", relativeTo: Constants.defaultBaseURL) else {
+            print("[makeImageListRequest]: Невозможно создать URL.")
             return nil
         }
         
@@ -97,5 +85,47 @@ final class ImagesListService {
         request.httpMethod = HTTPMethod.get.rawValue
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
+    }
+    
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let token = oauth2TokenStorage.token else {
+            print("[chahgeLike]: Токен не найден.")
+            return
+        }
+        
+        let httpMethod = isLike ? HTTPMethod.post.rawValue : HTTPMethod.delete.rawValue
+        
+        guard let url = URL(string: "/photos/\(photoId)/like", relativeTo: Constants.defaultBaseURL) else {
+            print("[chahgeLike]: Неверный URL запрос.")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = httpMethod
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        let task = URLSession.shared.dataTask(with: request) { [weak self] (data, response, error) in
+            if let error {
+                print("[chahgeLike]: \(error).")
+                completion(.failure(error))
+                return
+            }
+            
+            guard let httpResponse = response as? HTTPURLResponse,
+                  (200...299).contains(httpResponse.statusCode) else {
+                completion(.failure(ImagesListServiceError.invalidRequest))
+                return
+            }
+            DispatchQueue.main.async {
+                guard let self else { return }
+                if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+                    var photo = self.photos[index]
+                    photo.isLiked = isLike
+                    self.photos[index] = photo
+                    completion(.success(()))
+                }
+            }
+        }
+        task.resume()
     }
 }

@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 final class ImagesListViewController: UIViewController {
     
@@ -111,8 +112,10 @@ extension ImagesListViewController: UITableViewDataSource {
     }
     
     func configCell(for cell: ImagesListCell, with photo: Photo) {
+//        cell.setLoadingIndicator(true)
         cell.configure(with: photo)
-//        cell.delegate = self
+//        cell.setLoadingIndicator(true)
+        cell.delegate = self
     }
 }
 
@@ -140,5 +143,33 @@ extension ImagesListViewController: UITableViewDelegate {
                 let ratio = imageViewWidth / photo.size.width
                 return photo.size.height * ratio + imageInsets.top + imageInsets.bottom
     }
-    
+}
+
+extension ImagesListViewController: ImagesListCellDelegate {
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let photo = photos[indexPath.row]
+        
+        UIBlockingProgressHUD.show()
+        
+        ImagesListService.shared.changeLike(photoId: photo.id, isLike: !photo.isLiked) { result in
+            switch result {
+            case .success:
+                DispatchQueue.main.async {
+                    self.photos = ImagesListService.shared.photos
+                }
+                cell.setIsLiked(photo: self.photos[indexPath.row])
+                UIBlockingProgressHUD.dismiss()
+            case .failure:
+                UIBlockingProgressHUD.dismiss()
+                let alert = UIAlertController(title: "Что-то пошло не так(",
+                                              message: "Ошибка при установке/снятии лайка",
+                                              preferredStyle: .alert
+                )
+                let action = UIAlertAction(title: "OK", style: .default)
+                alert.addAction(action)
+                self.present(alert, animated: true)
+            }
+        }
+    }
 }
