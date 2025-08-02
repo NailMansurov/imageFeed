@@ -8,6 +8,7 @@ final class SingleImageViewController: UIViewController {
             singleImageView.frame.size = image.size
         }
     }
+    var imageURL: URL?
     
     @IBOutlet private var singleImageView: UIImageView!
     @IBOutlet private var scrollView: UIScrollView!
@@ -16,12 +17,27 @@ final class SingleImageViewController: UIViewController {
         super.viewDidLoad()
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
+        scrollView.delegate = self
         
-        guard let image else { return }
-        singleImageView.image = image
-        singleImageView.frame.size = image.size
-        rescaleAndCenterImageInScrollView(image: image)
+        //        guard let image else { return }
+        //        singleImageView.image = image
+        //        singleImageView.frame.size = image.size
+        //        rescaleAndCenterImageInScrollView(image: image)
         
+        if let url = imageURL {
+            singleImageView.kf.setImage(with: url,
+                                        placeholder: R.image.imagePlaceholder(),
+                                        options: nil
+            ) { [weak self] result in
+                switch result {
+                case .success(let value):
+                    self?.image = value.image
+                    self?.rescaleAndCenterImageInScrollView(image: value.image)
+                case .failure(let error):
+                    print("[viewDidLoad] Error: \(error.localizedDescription)")
+                }
+            }
+        }
     }
     
     @IBAction private func didTapBackButton() {
