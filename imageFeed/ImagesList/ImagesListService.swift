@@ -42,15 +42,8 @@ final class ImagesListService {
                 
                 switch result {
                 case .success(let photoResult):
-                    let newPhotos = photoResult.map { photoResult in
-                        return Photo(id: photoResult.id,
-                                     size: CGSize(width: photoResult.width,
-                                                  height: photoResult.height),
-                                     createdAt: self.dateFormatter.date(from: photoResult.createdAt),
-                                     welcomeDescription: photoResult.description,
-                                     thumbImageURL: photoResult.urls.thumb,
-                                     largeImageURL: photoResult.urls.full,
-                                     isLiked: photoResult.likedByUser)
+                    let newPhotos = photoResult.map {
+                        Photo(from: $0, dateFormatter: self.dateFormatter)
                     }
                     self.lastLoadedPage = nextPage
                     self.photos.append(contentsOf: newPhotos)
