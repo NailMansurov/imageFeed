@@ -68,6 +68,10 @@ final class ProfileViewController: UIViewController {
     private lazy var logoutButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(R.image.logoutButton(), for: .normal)
+        button.addTarget(self,
+                         action: #selector(didTapLogoutButton),
+                         for: .touchUpInside
+        )
         view.addSubview(button)
         return button
     }()
@@ -99,6 +103,24 @@ final class ProfileViewController: UIViewController {
         setupUI()
         setupConstraints()
         
+    }
+    
+    @objc private func didTapLogoutButton() {
+        let alert = UIAlertController(
+            title: "Пока, пока!",
+            message: "Уверены, что хотите выйти?",
+            preferredStyle: .alert
+        )
+        alert.addAction(
+            UIAlertAction(title: "Да", style: .default) { _ in
+                ProfileLogoutService.shared.logout()
+            }
+        )
+        alert.addAction(
+            UIAlertAction(title: "Нет", style: .default)
+        )
+
+        present(alert, animated: true)
     }
     
     // MARK: - Private methods

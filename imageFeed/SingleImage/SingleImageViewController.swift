@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 final class SingleImageViewController: UIViewController {
     var image: UIImage? {
@@ -8,6 +9,7 @@ final class SingleImageViewController: UIViewController {
             singleImageView.frame.size = image.size
         }
     }
+    var imageURL: URL?
     
     @IBOutlet private var singleImageView: UIImageView!
     @IBOutlet private var scrollView: UIScrollView!
@@ -16,12 +18,16 @@ final class SingleImageViewController: UIViewController {
         super.viewDidLoad()
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
+        scrollView.delegate = self
         
-        guard let image else { return }
-        singleImageView.image = image
-        singleImageView.frame.size = image.size
-        rescaleAndCenterImageInScrollView(image: image)
-        
+        if let image = image {
+            singleImageView.image = image
+            singleImageView.frame.size = image.size
+            scrollView.contentSize = image.size
+            rescaleAndCenterImageInScrollView(image: image)
+        } else {
+            loadImage()
+        }
     }
     
     @IBAction private func didTapBackButton() {
@@ -35,6 +41,42 @@ final class SingleImageViewController: UIViewController {
             applicationActivities: nil
         )
         present(share, animated: true, completion: nil)
+    }
+    
+    private func loadImage() {
+        UIBlockingProgressHUD.show()
+        
+        if let url = imageURL {
+            singleImageView.kf.setImage(with: url,
+                                        placeholder: R.image.imagePlaceholder(),
+                                        options: nil
+            ) { [weak self] result in
+                UIBlockingProgressHUD.dismiss()
+                switch result {
+                case .success(let value):
+                    self?.image = value.image
+                    self?.rescaleAndCenterImageInScrollView(image: value.image)
+                case .failure(let error):
+                    print("[viewDidLoad] Error: \(error.localizedDescription)")
+                    self?.showError()
+                }
+            }
+        }
+    }
+    
+    private func showError() {
+        let alert = UIAlertController(
+            title: "Ошибка",
+            message: "Что-то пошло не так. Попробовать ещё раз?",
+            preferredStyle: .alert
+        )
+        
+        alert.addAction(UIAlertAction(title: "Не надо", style: .default))
+        alert.addAction(UIAlertAction(title: "Повторить", style: .default) { [weak self] _ in
+            self?.loadImage()
+        })
+        
+        present(alert, animated: true)
     }
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {

@@ -1,6 +1,12 @@
 import UIKit
+import Kingfisher
+
+protocol ImagesListCellDelegate: AnyObject {
+    func imageListCellDidTapLike(_ cell: ImagesListCell)
+}
 
 final class ImagesListCell: UITableViewCell {
+    weak var delegate: ImagesListCellDelegate?
     
     // MARK: - Static properties
     
@@ -12,16 +18,44 @@ final class ImagesListCell: UITableViewCell {
     @IBOutlet private var dateLabel: UILabel!
     @IBOutlet private var cellImage: UIImageView!
     
+    // MARK: - Overrides methods
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        cellImage.kf.cancelDownloadTask()
+        cellImage.image = R.image.imagePlaceholder()
+    }
+    
+    // MARK: - Private methods
+    
+    @IBAction private func didTapLikeButton(_ sender: Any) {
+        delegate?.imageListCellDidTapLike(self)
+    }
+    
+    
     // MARK: - Public methods
     
-    func configure(with image: UIImage, date: String, isLiked: Bool) {
-        cellImage.image = image
-        dateLabel.text = date
-        
-        let likeImage = isLiked ? UIImage(named: "likeButtonOn") : UIImage(
-            named: "likeButtonOff"
+    func configure(with photo: Photo) {
+        cellImage.kf.setImage(
+            with: URL(string: photo.thumbImageURL),
+            placeholder: R.image.imagePlaceholder()
         )
-        
-        likeButton.setImage(likeImage, for: .normal)
+        if let date = photo.createdAt {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "d MMMM yyyy"
+            formatter.locale = Locale(identifier: "ru_RU")
+            dateLabel.text = formatter.string(from: date)
+        } else {
+            dateLabel.text = ""
+        }
+    }
+    
+    func setIsLiked(photo: Photo) {
+        let image = photo.isLiked ? R.image.likeButtonOn() : R.image.likeButtonOff()
+        likeButton.setImage(image, for: .normal)
+    }
+    
+    func setLoadingIndicator(_ enabled: Bool) {
+        cellImage.kf.indicatorType = enabled ? .activity: .none
     }
 }
