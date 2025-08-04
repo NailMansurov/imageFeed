@@ -20,13 +20,13 @@ final class ProfileService {
         if task != nil {
             task?.cancel()
         }
-        guard let baseURL = Constants.defaultBaseURL,
-              let url = URL(string: "/me", relativeTo: baseURL)
-        else {
-            print("[fetchProfile]: Неверный defaultBaseURL")
-            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: ""])))
-            return
-        }
+        
+        let url = URL(string: "/me", relativeTo: Constants.defaultBaseURL)
+            guard let url = url else {
+                print("[fetchProfile]: Не удалось создать URL")
+                completion(.failure(URLError(.badURL)))
+                return
+            }
         
         let request = makeURLRequest(url: url, token: token)
         

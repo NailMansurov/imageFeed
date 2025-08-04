@@ -69,7 +69,8 @@ final class ImagesListService {
             return nil
         }
         
-        guard let url = URL(string: "/photos?page=\(page)&per_page=\(perPage)", relativeTo: Constants.defaultBaseURL) else {
+        let url = URL(string: "/photos?page=\(page)&per_page=\(perPage)", relativeTo: Constants.defaultBaseURL)
+        guard let url = url else {
             print("[makeImageListRequest]: Невозможно создать URL.")
             return nil
         }
@@ -88,7 +89,9 @@ final class ImagesListService {
         
         let httpMethod = isLike ? HTTPMethod.post.rawValue : HTTPMethod.delete.rawValue
         
-        guard let url = URL(string: "/photos/\(photoId)/like", relativeTo: Constants.defaultBaseURL) else {
+        let url = URL(string: "/photos/\(photoId)/like", relativeTo: Constants.defaultBaseURL)
+        
+        guard let url = url else {
             print("[chahgeLike]: Неверный URL запрос.")
             return
         }

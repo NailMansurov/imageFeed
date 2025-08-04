@@ -46,9 +46,9 @@ final class ProfileImageService {
     }
     
     private func makeProfileImageRequest(_ username: String) -> URLRequest? {
-        guard let baseURL = Constants.defaultBaseURL,
-              let url = URL(string: "/users/\(username)", relativeTo: baseURL) else {
-            return nil
+        let url = URL(string: "/users/\(username)", relativeTo: Constants.defaultBaseURL)
+            guard let url = url else {
+                return nil
         }
         
         guard let token = oauth2TokenStorage.token else {
