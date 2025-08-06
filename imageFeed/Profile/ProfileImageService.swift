@@ -1,6 +1,12 @@
 import Foundation
 
-final class ProfileImageService {
+protocol ProfileImageServiceProtocol: AnyObject {
+    var avatarURL: String? { get }
+    func fetchProfileImageURL(username: String, completion: @escaping (Result<String, Error>) -> Void)
+    func deleteProfileImage()
+}
+
+final class ProfileImageService: ProfileImageServiceProtocol {
     static let shared = ProfileImageService()
     static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
     private(set) var avatarURL: String?
@@ -9,7 +15,7 @@ final class ProfileImageService {
     
     private init() {}
     
-    func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
+    func fetchProfileImageURL(username: String, completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
         
         if task != nil {

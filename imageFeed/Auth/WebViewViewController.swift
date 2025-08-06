@@ -21,8 +21,6 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
     @IBOutlet private var webView: WKWebView!
     @IBOutlet private var progressView: UIProgressView!
     
-    //    private var estimatedProgressObservation: NSKeyValueObservation?
-    
     // MARK: - Public Properties
     
     weak var delegate: WebViewViewControllerDelegate?
