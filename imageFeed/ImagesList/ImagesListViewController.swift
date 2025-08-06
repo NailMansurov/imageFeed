@@ -15,7 +15,7 @@ final class ImagesListViewController: UIViewController & ImagesListViewControlle
     
     // MARK: - Private properties
     
-    @IBOutlet private var tableView: UITableView!
+    @IBOutlet var tableView: UITableView!
     
     private let photosName: [String] = Array(0..<20).map{ "image\($0)" }
     private let showSingleImageSequeIdentifier = "ShowSingleImage"

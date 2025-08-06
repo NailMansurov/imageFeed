@@ -36,7 +36,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
     
     // MARK: - Private properties
     
-    private let presenter: ProfileViewPresenterProtocol
+    var presenter: ProfileViewPresenterProtocol
     
     private let profileService = ProfileService.shared
     
@@ -63,6 +63,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         label.textColor = R.color.ypGrey()
         label.font = .systemFont(ofSize: Constants.loginLabelFontSize)
         view.addSubview(label)
+        logoutButton.accessibilityIdentifier = "exit"
         return label
     }()
     

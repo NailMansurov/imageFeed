@@ -36,6 +36,8 @@ final class ImagesListCell: UITableViewCell {
     // MARK: - Public methods
     
     func configure(with photo: Photo) {
+        likeButton.accessibilityIdentifier = "Like"
+        
         cellImage.kf.setImage(
             with: URL(string: photo.thumbImageURL),
             placeholder: R.image.imagePlaceholder()
@@ -54,6 +56,7 @@ final class ImagesListCell: UITableViewCell {
     func setIsLiked(isLiked: Bool) {
         let imageName = isLiked ? R.image.likeButtonOn() : R.image.likeButtonOff()
         likeButton.setImage(imageName, for: .normal)
+//        likeButton.accessibilityIdentifier = isLiked ? "likeButtonOn" : "likeButtonOff"
     }
     
     func setLoadingIndicator(_ enabled: Bool) {

@@ -48,7 +48,7 @@ final class ProfileService: ProfileServiceProtocol {
                     bio: profileResult.bio ?? "")
                 self.profile = profile
                 completion(.success(profile))
-                print("Профиль получен: \(profile)")
+                print("[fetchProfile]:Профиль получен: \(profile)")
             case .failure(let error):
                 completion(.failure(error))
                 print("[fetchProfile]: Ошибка получения данных профиля: \(error)")
