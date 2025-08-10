@@ -2,7 +2,7 @@
 import XCTest
 
 final class ImagesListViewTests: XCTestCase {
-    func testViewComntrollerCallsViewDidLoad1() {
+    func testViewControllerCallsViewDidLoad1() {
         //given
         let storyboard = UIStoryboard(name: "Main", bundle: .main)
         let viewController = storyboard.instantiateViewController(identifier: "ImagesListViewController") as? ImagesListViewController

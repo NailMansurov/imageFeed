@@ -132,8 +132,8 @@ extension ImagesListViewController: ImagesListCellDelegate {
         
         UIBlockingProgressHUD.show()
         presenter?.didTapLike(at: indexPath) { [weak self] result in
-            guard let self else { return }
             UIBlockingProgressHUD.dismiss()
+            guard let self else { return }
             switch result {
             case .success:
                 self.reloadCell(at: indexPath)

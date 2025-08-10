@@ -1,8 +1,6 @@
 import Foundation
 
 enum Constants {
-//    static let accessKey = "3zsn3IrOk0M3bBEQaGlHPysEq-WUg9FPNksntWGSsdk" //m
-//    static let secretKey = "igYA-csMOYlfIwJ4mpFv0EuzM4JJkUloVUod_orUx58"
     static let accessKey = "XdDxrqODIQgKVIPFg_HY6QJO8pDC-3huFgOvwUmndCA" //z
     static let secretKey = "2ONPdfzBGTxhVPIVkiAEBYtBeRapqIh5zRx6p_vMaok"
     static let redirectURI = "urn:ietf:wg:oauth:2.0:oob"
@@ -35,7 +33,7 @@ struct AuthConfiguration {
     }
     
     static var standard: AuthConfiguration {
-        return AuthConfiguration(accessKey: Constants.accessKey,
+        AuthConfiguration(accessKey: Constants.accessKey,
                                  secretKey: Constants.secretKey,
                                  redirectURI: Constants.redirectURI,
                                  accessScope: Constants.accessScope,

@@ -2,7 +2,7 @@
 import XCTest
 
 final class ProfileViewTests: XCTestCase {
-    func testViewComntrollerCallsViewDidLoad() {
+    func testViewControllerCallsViewDidLoad() {
         //given
         let presenter = ProfileViewPresenterSpy()
         let viewController = ProfileViewController(presenter: presenter)
@@ -36,13 +36,13 @@ final class ProfileViewTests: XCTestCase {
     
     func testSetProfileImageURL() {
         //given
-        let viewControlle = ProfileViewControllerSpy()
+        let viewController = ProfileViewControllerSpy()
         let url = URL(string: "https://example.com/profile.jpg")
         
         //when
-        viewControlle.updateAvatar(url: url)
+        viewController.updateAvatar(url: url)
         
         //then
-        XCTAssertEqual(viewControlle.profileImageURL, url)
+        XCTAssertEqual(viewController.profileImageURL, url)
     }
 }
