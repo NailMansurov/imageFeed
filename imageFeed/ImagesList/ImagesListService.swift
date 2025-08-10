@@ -1,11 +1,18 @@
 import Foundation
 
+protocol ImagesListServiceProtocol {
+    var photos: [Photo] { get }
+    func fetchPhotosNextPage()
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void)
+    func deleteImageList()
+}
+
 enum ImagesListServiceError: Error {
     case invalidRequest
 }
 
 
-final class ImagesListService {
+final class ImagesListService: ImagesListServiceProtocol {
     static let shared = ImagesListService()
     
     // MARK: - Private properties
@@ -69,7 +76,8 @@ final class ImagesListService {
             return nil
         }
         
-        guard let url = URL(string: "/photos?page=\(page)&per_page=\(perPage)", relativeTo: Constants.defaultBaseURL) else {
+        let url = URL(string: "/photos?page=\(page)&per_page=\(perPage)", relativeTo: Constants.defaultBaseURL)
+        guard let url = url else {
             print("[makeImageListRequest]: Невозможно создать URL.")
             return nil
         }
@@ -88,7 +96,9 @@ final class ImagesListService {
         
         let httpMethod = isLike ? HTTPMethod.post.rawValue : HTTPMethod.delete.rawValue
         
-        guard let url = URL(string: "/photos/\(photoId)/like", relativeTo: Constants.defaultBaseURL) else {
+        let url = URL(string: "/photos/\(photoId)/like", relativeTo: Constants.defaultBaseURL)
+        
+        guard let url = url else {
             print("[chahgeLike]: Неверный URL запрос.")
             return
         }

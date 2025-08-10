@@ -1,6 +1,13 @@
 import Foundation
 
-final class ProfileService {
+protocol ProfileServiceProtocol: AnyObject {
+    var profile: Profile? { get }
+    func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void)
+    func deleteProfile()
+}
+
+
+final class ProfileService: ProfileServiceProtocol {
     static let shared = ProfileService()
     
     private(set) var profile: Profile?
@@ -20,13 +27,13 @@ final class ProfileService {
         if task != nil {
             task?.cancel()
         }
-        guard let baseURL = Constants.defaultBaseURL,
-              let url = URL(string: "/me", relativeTo: baseURL)
-        else {
-            print("[fetchProfile]: Неверный defaultBaseURL")
-            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: ""])))
-            return
-        }
+        
+        let url = URL(string: "/me", relativeTo: Constants.defaultBaseURL)
+            guard let url = url else {
+                print("[fetchProfile]: Не удалось создать URL")
+                completion(.failure(URLError(.badURL)))
+                return
+            }
         
         let request = makeURLRequest(url: url, token: token)
         
@@ -41,7 +48,7 @@ final class ProfileService {
                     bio: profileResult.bio ?? "")
                 self.profile = profile
                 completion(.success(profile))
-                print("Профиль получен: \(profile)")
+                print("[fetchProfile]:Профиль получен: \(profile)")
             case .failure(let error):
                 completion(.failure(error))
                 print("[fetchProfile]: Ошибка получения данных профиля: \(error)")

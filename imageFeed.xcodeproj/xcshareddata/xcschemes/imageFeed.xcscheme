@@ -35,9 +35,25 @@
             parallelizable = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D1CE3EE02E394B470016E213"
+               BlueprintIdentifier = "D1A754202E4127F6009CBCCA"
                BuildableName = "imageFeedTests.xctest"
                BlueprintName = "imageFeedTests"
+               ReferencedContainer = "container:imageFeed.xcodeproj">
+            </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "ImagesListViewTests">
+               </Test>
+            </SkippedTests>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D1A757222E43E6D2009CBCCA"
+               BuildableName = "imageFeedUITests.xctest"
+               BlueprintName = "imageFeedUITests"
                ReferencedContainer = "container:imageFeed.xcodeproj">
             </BuildableReference>
          </TestableReference>

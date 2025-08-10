@@ -1,7 +1,14 @@
 import UIKit
 import Kingfisher
 
-final class ProfileViewController: UIViewController {
+protocol ProfileViewControllerProtocol: AnyObject {
+    func updateProfileDetails(profile: Profile)
+    func showDefaultProfile()
+    func updateAvatar(url: URL?)
+    func didTapLogoutButton()
+}
+
+final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
     
     // MARK: - Constants
     
@@ -29,6 +36,8 @@ final class ProfileViewController: UIViewController {
     
     // MARK: - Private properties
     
+    var presenter: ProfileViewPresenterProtocol
+    
     private let profileService = ProfileService.shared
     
     private var profileImageServiceObserver: NSObjectProtocol?
@@ -54,6 +63,7 @@ final class ProfileViewController: UIViewController {
         label.textColor = R.color.ypGrey()
         label.font = .systemFont(ofSize: Constants.loginLabelFontSize)
         view.addSubview(label)
+        logoutButton.accessibilityIdentifier = "exit"
         return label
     }()
     
@@ -76,36 +86,30 @@ final class ProfileViewController: UIViewController {
         return button
     }()
     
+    init(presenter: ProfileViewPresenterProtocol) {
+        self.presenter = presenter
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        if let profile = self.profileService.profile {
-            self.updateProfileDetails(profile: profile)
-        } else {
-            print("[viewDidLoad in ProfileViewController]: Профиль еще не загружен.")
-        }
-        
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(forName: ProfileImageService.didChangeNotification,
-                         object: nil,
-                         queue: .main,
-            ) { [weak self] _ in
-                guard let self = self else { return }
-                self.updateAvatar()
-            }
+        presenter.view = self
+        presenter.viewDidLoad()
+        presenter.setProfileNotificationObserver()
         
         view.backgroundColor = R.color.ypBlack()
         
-        updateAvatar()
-        
         setupUI()
         setupConstraints()
-        
     }
     
-    @objc private func didTapLogoutButton() {
+    @objc func didTapLogoutButton() {
         let alert = UIAlertController(
             title: "Пока, пока!",
             message: "Уверены, что хотите выйти?",
@@ -123,22 +127,14 @@ final class ProfileViewController: UIViewController {
         present(alert, animated: true)
     }
     
-    // MARK: - Private methods
+    // MARK: - Public methods
     
-    private func updateAvatar() {
-        guard
-            let avatarURL = ProfileImageService.shared.avatarURL,
-            let url = URL(string: avatarURL)
-        else {
-            print("[UpdateAvatar]: Не удалось загрузить аватар.")
-            return
-        }
+    func updateAvatar(url: URL?) {
         let placeholderImage = UIImage(systemName: "person.circle.fill")?
             .withTintColor(.lightGray, renderingMode: .alwaysOriginal)
             .withConfiguration(UIImage.SymbolConfiguration(pointSize: 70, weight: .regular, scale: .large))
         
         let processor = RoundCornerImageProcessor(cornerRadius: 35)
-        avatarImageView.kf.indicatorType = .activity
         avatarImageView.kf.setImage(
             with: url,
             placeholder: placeholderImage,
@@ -149,11 +145,19 @@ final class ProfileViewController: UIViewController {
                 .forceRefresh])
     }
     
-    private func updateProfileDetails(profile: Profile) {
+    func updateProfileDetails(profile: Profile) {
         nameLabel.text = profile.name
         loginLabel.text = profile.loginName
         descriptionLabel.text = profile.bio
     }
+    
+    func showDefaultProfile() {
+       nameLabel.text = "Петр Петров"
+       loginLabel.text = "@Petrov"
+       descriptionLabel.text = nil
+   }
+    
+    // MARK: - Private methods
     
     private func setupUI() {
         view.addSubviews(
